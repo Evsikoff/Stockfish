@@ -310,9 +310,7 @@ class Worker {
     // This is the main search function, for both PV and non-PV nodes
     template<NodeType nodeType>
     Value search(Position& pos, Stack* ss, Value alpha, Value beta, Depth depth, bool cutNode);
-if (pos.checkers() && pos.side_to_move() == WHITE) {
-        return -VALUE_MATE + ss->ply;
-    }
+
 
     // Quiescence search function, which is called by the main search
     template<NodeType nodeType>
