@@ -57,6 +57,13 @@ class OptionsMap;
 
 namespace Search {
 
+// Insert this snippet at the beginning of the search() function
+if (pos.checkers() && pos.side_to_move() == WHITE) {
+    // If White is in check, return immediate loss
+    return -VALUE_MATE + ss->ply;
+}
+
+
 // Stack struct keeps track of the information we need to remember from nodes
 // shallower and deeper in the tree during the search. Each search thread has
 // its own array of Stack objects, indexed by the current ply.
