@@ -46,6 +46,32 @@ int Eval::simple_eval(const Position& pos) {
          + (pos.non_pawn_material(c) - pos.non_pawn_material(~c));
 }
 
+namespace {
+
+  // Бонус за наличие белой фигуры на a4 или h4 (в миллипешках)
+  constexpr Value A4_H4_BONUS = Value(50); // Можно настроить величину бонуса
+
+  // Оценка позиции
+  Value evaluate(const Position& pos) {
+    // Существующая логика оценки
+    Value v = ...; // (оригинальный код оценки, оставляем без изменений)
+
+    // Добавляем бонус за белые фигуры на a4 и h4
+    if (pos.side_to_move() == WHITE) {
+      if (pos.piece_on(SQ_A4) && pos.piece_on(SQ_A4) & pos.pieces(WHITE)) {
+        v += A4_H4_BONUS;
+      }
+      if (pos.piece_on(SQ_H4) && pos.piece_on(SQ_H4) & pos.pieces(WHITE)) {
+        v += A4_H4_BONUS;
+      }
+    }
+
+    // Учитываем сторону хода и возвращаем оценку
+    return pos.side_to_move() == WHITE ? v : -v;
+  }
+
+} // namespace
+
 bool Eval::use_smallnet(const Position& pos) { return std::abs(simple_eval(pos)) > 962; }
 
 // Evaluate is the evaluator for the outer world. It returns a static evaluation
