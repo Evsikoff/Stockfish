@@ -46,31 +46,19 @@ int Eval::simple_eval(const Position& pos) {
          + (pos.non_pawn_material(c) - pos.non_pawn_material(~c));
 }
 
-namespace {
+// Проверка наличия белых фигур на полях a4 и h4
+Square squareA4 = SQ_A4;
+Square squareH4 = SQ_H4;
 
-  // Бонус за наличие белой фигуры на a4 или h4 (в миллипешках)
-  constexpr Value A4_H4_BONUS = Value(50); // Можно настроить величину бонуса
+// Проверка наличия белой фигуры на a4
+if (pos.piece_on(squareA4) != NO_PIECE && color_of(pos.piece_on(squareA4)) == WHITE) {
+    score += Value(20); // Добавляем 20 центилей за фигуру на a4
+}
 
-  // Оценка позиции
-  Value evaluate(const Position& pos) {
-    // Существующая логика оценки
-    Value v = ...; // (оригинальный код оценки, оставляем без изменений)
-
-    // Добавляем бонус за белые фигуры на a4 и h4
-    if (pos.side_to_move() == WHITE) {
-      if (pos.piece_on(SQ_A4) && pos.piece_on(SQ_A4) & pos.pieces(WHITE)) {
-        v += A4_H4_BONUS;
-      }
-      if (pos.piece_on(SQ_H4) && pos.piece_on(SQ_H4) & pos.pieces(WHITE)) {
-        v += A4_H4_BONUS;
-      }
-    }
-
-    // Учитываем сторону хода и возвращаем оценку
-    return pos.side_to_move() == WHITE ? v : -v;
-  }
-
-} // namespace
+// Проверка наличия белой фигуры на h4
+if (pos.piece_on(squareH4) != NO_PIECE && color_of(pos.piece_on(squareH4)) == WHITE) {
+    score += Value(20); // Добавляем 20 центилей за фигуру на h4
+}
 
 bool Eval::use_smallnet(const Position& pos) { return std::abs(simple_eval(pos)) > 962; }
 
