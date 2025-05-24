@@ -1530,10 +1530,7 @@ Value Search::Worker::qsearch(Position& pos, Stack* ss, Value alpha, Value beta)
 
     assert(alpha >= -VALUE_INFINITE && alpha < beta && beta <= VALUE_INFINITE);
     assert(PvNode || (alpha == beta - 1));
- // Новая логика для белых (шах = поражение)
-    if (pos.checkers() && pos.side_to_move() == WHITE) {
-        return -VALUE_MATE + ss->ply;
-    }
+ 
     // Check if we have an upcoming move that draws by repetition
     if (alpha < VALUE_DRAW && pos.upcoming_repetition(ss->ply))
     {
